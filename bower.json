@@ -1,0 +1,16 @@
+{
+  "name": "web-chat",
+  "version": "0.0.1",
+  "homepage": "https://github.com/brisad/web-chat",
+  "authors": [
+    "Michael Brennan <brennan.brisad@gmail.com>"
+  ],
+  "license": "GPLv2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
