@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <head>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+  <script src="{{ url_for('static', filename='bower_components/socket.io-client/dist/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
   <script charset="utf-8">
     var socket = io.connect('http://' + document.domain + ':' + location.port);
