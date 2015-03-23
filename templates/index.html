@@ -4,6 +4,7 @@
   <script src="{{ url_for('static', filename='bower_components/socket.io-client/dist/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bower_components/react/JSXTransformer.js') }}"></script>
+  <script type="text/jsx" src="{{ url_for('static', filename='chat.js') }}">
   <script charset="utf-8">
     var socket = io.connect('http://' + document.domain + ':' + location.port);
     socket.on('connect', function () {
@@ -14,59 +15,5 @@
 <html>
   <body>
     <div id="content"></div>
-    <script type="text/jsx">
-
-var UserList = React.createClass({
-  render: function () {
-    return (
-      <div>
-        <ul>
-          <li>User 1</li>
-          <li>User 2</li>
-        </ul>
-      </div>
-    );
-  }
-});
-
-var ChatMessages = React.createClass({
-  render: function () {
-    return (
-      <ul>
-        <li>User 1: Chat message 1</li>
-        <li>User 2: Chat message 2</li>
-      </ul>
-    );
-  }
-});
-
-var InputBox = React.createClass({
-  render: function () {
-    return (
-      <input type="text"></input>
-    );
-  }
-});
-
-var SendButton = React.createClass({
-  render: function () {
-    return (
-      <button>Send</button>
-    );
-  }
-});
-
-React.render(
-  <div>
-    <h1>Chat</h1>
-    <UserList />
-    <ChatMessages />
-    <InputBox />
-    <SendButton />
-  </div>,
-  document.getElementById('content')
-);
-
-    </script>
   </body>
 </html>
