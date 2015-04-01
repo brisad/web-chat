@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="{{ url_for('static', filename='bower_components/socket.io-client/dist/socket.io.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bower_components/react/react.min.js') }}"></script>
   <script src="{{ url_for('static', filename='bower_components/react/JSXTransformer.js') }}"></script>
@@ -14,6 +15,5 @@
 </head>
 <html>
   <body>
-    <div id="content"></div>
   </body>
 </html>

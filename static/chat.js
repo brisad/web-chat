@@ -14,7 +14,7 @@ var UserList = React.createClass({
 var ChatMessages = React.createClass({
   render: function () {
     return (
-      <ul>
+      <ul id="messages">
         <li>User 1: Chat message 1</li>
         <li>User 2: Chat message 2</li>
       </ul>
@@ -22,18 +22,15 @@ var ChatMessages = React.createClass({
   }
 });
 
-var InputBox = React.createClass({
+var InputForm = React.createClass({
   render: function () {
     return (
-      <input type="text"></input>
-    );
-  }
-});
-
-var SendButton = React.createClass({
-  render: function () {
-    return (
-      <button>Send</button>
+      <div id="inputForm">
+        <div id="inputWrapper">
+          <input type="text"></input>
+        </div>
+        <button>Send</button>
+      </div>
     );
   }
 });
@@ -43,8 +40,7 @@ React.render(
     <h1>Chat</h1>
     <UserList />
     <ChatMessages />
-    <InputBox />
-    <SendButton />
+    <InputForm />
   </div>,
-  document.getElementById('content')
+  document.body
 );

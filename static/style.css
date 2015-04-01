@@ -1,0 +1,56 @@
+body {
+    font: 13px sans-serif;
+}
+
+h1 {
+    font-size: 1.5em;
+}
+
+ul {
+    list-style-type: none;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+#messages {
+    height: 200px;
+}
+
+#inputForm {
+    position: fixed;
+    left: 8px;
+    right: 8px;
+    bottom: 6px;
+}
+
+#inputWrapper {
+    position: absolute;
+    left: 0;
+    right: 75px;
+    bottom: 0;
+}
+
+input {
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-right: 4px;
+    padding: 4px;
+    width: 100%;
+}
+
+button {
+    background-color: #ccc;
+    border: 1px solid #000;
+    border-radius: 4px;
+    padding: 3px;
+    width: 60px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+button:hover {
+    background: lightblue;
+    box-shadow: 0px 0px 1px #777;
+}
