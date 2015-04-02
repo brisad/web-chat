@@ -17,20 +17,29 @@ registered_users = set()
 def register_user(username):
     if username in registered_users:
         emit('registered', False)
-    else:
-        registered_users.add(username)
-        emit('registered', True)
+        return
 
-    print("Users: " + str(registered_users))
+    registered_users.add(username)
+    emit('registered', True)
+
+    print('Users: ' + str(registered_users))
+
+    emit('user enter',
+         {'username': username, 'userlist': list(registered_users)},
+         broadcast=True)
 
 @socketio.on('unregister')
 def unregister_user(username):
     try:
         registered_users.remove(username)
     except KeyError:
-        pass  # Don't care if aleady unregistered
+        return  # Ignore if aleady unregistered
 
-    print("Users: " + str(registered_users))
+    print('Users: ' + str(registered_users))
+
+    emit('user leave',
+         {'username': username, 'userlist': list(registered_users)},
+         broadcast=True)
 
 
 if __name__ == '__main__':
