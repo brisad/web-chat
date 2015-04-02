@@ -28,7 +28,7 @@ def unregister_user(username):
     try:
         registered_users.remove(username)
     except KeyError:
-        print("Unknown user '{}' tried to unregister".format(username))
+        pass  # Don't care if aleady unregistered
 
     print("Users: " + str(registered_users))
 
