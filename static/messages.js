@@ -24,11 +24,13 @@ socket.on('registered', function (success) {
 socket.on('user enter', function (data) {
   var username = data.username;
   var userlist = data.userlist;
-  console.log('Entered: ' + username + ' Userlist: ' + userlist);
+  Chat.setUsers(userlist);
+  Chat.addMessage(username + ' entered');
 });
 
 socket.on('user leave', function (data) {
   var username = data.username;
   var userlist = data.userlist;
-  console.log('Left: ' + username + ' Userlist: ' + userlist);
+  Chat.setUsers(userlist);
+  Chat.addMessage(username + ' left');
 });

@@ -1,24 +1,22 @@
 var UserList = React.createClass({
   render: function () {
-    return (
-      <div>
-        <ul>
-          <li>User 1</li>
-          <li>User 2</li>
-        </ul>
-      </div>
-    );
+    // Users are passed as children in an array.  Map it to an array
+    // of list items.
+    var users = this.props.children.map(function (user) {
+      return (<li>{user}</li>);
+    });
+    return (<div><ul>{users}</ul></div>);
   }
 });
 
 var ChatMessages = React.createClass({
   render: function () {
-    return (
-      <ul id="messages">
-        <li>User 1: Chat message 1</li>
-        <li>User 2: Chat message 2</li>
-      </ul>
-    );
+    // Messages are passed as children in an array.  Map it to an
+    // array of list items.
+    var messages = this.props.children.map(function (message) {
+      return (<li>{message}</li>);
+    });
+    return (<ul id="messages">{messages}</ul>);
   }
 });
 
@@ -35,12 +33,43 @@ var InputForm = React.createClass({
   }
 });
 
-React.render(
-  <div>
-    <h1>Chat</h1>
-    <UserList />
-    <ChatMessages />
-    <InputForm />
-  </div>,
-  document.body
-);
+var Chat = (function () {
+
+  // All users and messages shown in UI
+  var _users = [];
+  var _messages = [];
+
+  // Render chat UI with React.  This function needs to be called in
+  // order for any update to be shown.
+  var render = function () {
+    React.render(
+      <div>
+        <h1>Chat</h1>
+        <UserList>
+          {_users}
+        </UserList>
+        <ChatMessages>
+          {_messages}
+        </ChatMessages>
+        <InputForm />
+        </div>,
+      document.body
+    );
+  }
+
+  // Render the empty UI at init
+  render();
+
+  // Public functions
+  return {
+    setUsers: function (users) {
+      _users = users;
+      render();
+    },
+
+    addMessage: function (message) {
+      _messages.push(message);
+      render();
+    },
+  };
+})();
