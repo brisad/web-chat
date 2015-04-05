@@ -21,13 +21,36 @@ var ChatMessages = React.createClass({
 });
 
 var InputForm = React.createClass({
+
+  sendMessage: function () {
+    var input = React.findDOMNode(this.refs.text);
+    var message = input.value.trim();
+    if (!message) {
+      return;
+    }
+    input.value = '';
+
+    // Send it
+  },
+
+  handleKeyPress: function (e) {
+    // Send message if return key pressed
+    if (e.which == 13) {
+      this.sendMessage();
+    }
+  },
+
+  handleButtonClick: function () {
+    this.sendMessage();
+  },
+
   render: function () {
     return (
       <div id="inputForm">
         <div id="inputWrapper">
-          <input type="text"></input>
+          <input type="text" ref="text" onKeyPress={this.handleKeyPress} />
         </div>
-        <button>Send</button>
+        <button onClick={this.handleButtonClick}>Send</button>
       </div>
     );
   }
