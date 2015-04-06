@@ -59,8 +59,11 @@ var InputForm = React.createClass({
 var Chat = (function () {
 
   // All users and messages shown in UI
-  var _users = [];
-  var _messages = [];
+  var users = [];
+  var messages = [];
+
+  var username;
+  var registered = false;
 
   // Render chat UI with React.  This function needs to be called in
   // order for any update to be shown.
@@ -69,10 +72,10 @@ var Chat = (function () {
       <div>
         <h1>Chat</h1>
         <UserList>
-          {_users}
+          {users}
         </UserList>
         <ChatMessages>
-          {_messages}
+          {messages}
         </ChatMessages>
         <InputForm />
         </div>,
@@ -80,19 +83,58 @@ var Chat = (function () {
     );
   }
 
-  // Render the empty UI at init
-  render();
+  var setUsers = function (newUsers) {
+    users = newUsers;
+    render();
+  }
 
-  // Public functions
+  var addMessage = function (newMessage) {
+    messages.push(newMessage);
+    render();
+  }
+
+  var setupSocketEvents = function (socket) {
+    socket.on('connect', function () {
+      // Add handler for performing clean up at exit
+      $(window).bind('beforeunload', function() {
+        if (registered) {
+          socket.emit('unregister', username);
+        }
+        socket.disconnect();
+      });
+
+      socket.emit('register', username);
+    });
+
+    socket.on('registered', function (success) {
+      console.log('Registered: ' + success);
+      registered = success;
+    });
+
+    socket.on('user enter', function (data) {
+      var username = data.username;
+      var userlist = data.userlist;
+      setUsers(userlist);
+      addMessage(username + ' entered');
+    });
+
+    socket.on('user leave', function (data) {
+      var username = data.username;
+      var userlist = data.userlist;
+      setUsers(userlist);
+      addMessage(username + ' left');
+    });
+  }
+
   return {
-    setUsers: function (users) {
-      _users = users;
-      render();
-    },
+    init: function () {
+      username = "Guest" + parseInt(Math.random() * 10);
+      console.log("You are " + username);
 
-    addMessage: function (message) {
-      _messages.push(message);
-      render();
-    },
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      setupSocketEvents(socket);
+    }
   };
 })();
+
+Chat.init();
