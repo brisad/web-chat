@@ -62,9 +62,6 @@ var Chat = (function () {
   var users = [];
   var messages = [];
 
-  var username;
-  var registered = false;
-
   // Render chat UI with React.  This function needs to be called in
   // order for any update to be shown.
   var render = function () {
@@ -93,23 +90,46 @@ var Chat = (function () {
     render();
   }
 
-  var setupSocketEvents = function (socket) {
+  var connectToServer = function () {
+    var connected = $.Deferred();
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
     socket.on('connect', function () {
-      // Add handler for performing clean up at exit
-      $(window).bind('beforeunload', function() {
-        if (registered) {
-          socket.emit('unregister', username);
-        }
+      // Make sure to disconnect before unloading
+      $(window).bind('beforeunload', function () {
         socket.disconnect();
       });
-
-      socket.emit('register', username);
+      connected.resolve(socket);
     });
 
+    return connected.promise();
+  }
+
+  var register = function (socket, username) {
+    var registered = $.Deferred();
+
+    socket.emit('register', username);
     socket.on('registered', function (success) {
-      console.log('Registered: ' + success);
-      registered = success;
+
+      if (!success) {
+        registered.reject();
+        return;
+      }
+
+      // Replace the previous handler for disconnecting with a new one
+      // that also unregisters us from the chat
+      $(window).unbind('beforeunload');
+      $(window).bind('beforeunload', function () {
+        socket.emit('unregister', username);
+        socket.disconnect();
+      });
+      registered.resolve();
     });
+
+    return registered.promise();
+  }
+
+  var listenForMessages = function (socket) {
 
     socket.on('user enter', function (data) {
       var username = data.username;
@@ -131,8 +151,18 @@ var Chat = (function () {
       username = "Guest" + parseInt(Math.random() * 10);
       console.log("You are " + username);
 
-      var socket = io.connect('http://' + document.domain + ':' + location.port);
-      setupSocketEvents(socket);
+      connectToServer().then(function (socket) {
+
+        register(socket, username).then(
+          function () {
+            console.log("Register success!")
+            listenForMessages(socket);
+          },
+          function () {
+            console.log("Register fail!");
+          }
+        );
+      });
     }
   };
 })();

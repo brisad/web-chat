@@ -15,7 +15,7 @@ registered_users = set()
 
 @socketio.on('register')
 def register_user(username):
-    if username in registered_users:
+    if not username or username in registered_users:
         emit('registered', False)
         return
 
