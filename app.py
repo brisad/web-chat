@@ -21,9 +21,6 @@ def register_user(username):
 
     registered_users.add(username)
     emit('registered', True)
-
-    print('Users: ' + str(registered_users))
-
     emit('user enter',
          {'username': username, 'userlist': list(registered_users)},
          broadcast=True)
@@ -34,8 +31,6 @@ def unregister_user(username):
         registered_users.remove(username)
     except KeyError:
         return  # Ignore if aleady unregistered
-
-    print('Users: ' + str(registered_users))
 
     emit('user leave',
          {'username': username, 'userlist': list(registered_users)},
