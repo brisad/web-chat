@@ -41,6 +41,17 @@ def unregister_user(username):
          {'username': username, 'userlist': list(registered_users)},
          broadcast=True)
 
+@socketio.on('message')
+def receive_message(data):
+    try:
+        from_ = data['from']
+        message = data['message']
+    except:
+        print('Got invalid message: "{}"'.format(data))
+        return  # Ignore invalid data
+
+    emit('message', {'from': from_, 'message': message}, broadcast=True)
+
 
 if __name__ == '__main__':
     socketio.run(app)

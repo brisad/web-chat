@@ -30,7 +30,7 @@ var InputForm = React.createClass({
     }
     input.value = '';
 
-    // Send it
+    this.props.onSend(message);
   },
 
   handleKeyPress: function (e) {
@@ -74,10 +74,17 @@ var Chat = (function () {
         <ChatMessages>
           {messages}
         </ChatMessages>
-        <InputForm />
+        <InputForm onSend={sendMessage} />
         </div>,
       document.body
     );
+  }
+
+  // Placeholder function for sending messages to the server.  The
+  // real function is defined after a connection has been established
+  // and we've registered with the server.
+  var sendMessage = function (message) {
+    alert("Not ready");
   }
 
   var setUsers = function (newUsers) {
@@ -144,6 +151,12 @@ var Chat = (function () {
       setUsers(userlist);
       addMessage(username + ' left');
     });
+
+    socket.on('message', function (data) {
+      var from = data.from;
+      var message = data.message;
+      addMessage(from + ': ' + message);
+    });
   }
 
   return {
@@ -157,6 +170,10 @@ var Chat = (function () {
           function () {
             console.log("Register success!")
             listenForMessages(socket);
+
+            sendMessage = function (message) {
+              socket.emit('message', {'from': username, 'message': message});
+            }
           },
           function () {
             console.log("Register fail!");
