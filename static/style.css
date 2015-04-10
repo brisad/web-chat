@@ -36,6 +36,9 @@ input {
     border-radius: 4px;
     margin-right: 4px;
     padding: 4px;
+}
+
+#inputForm input {
     width: 100%;
 }
 
@@ -44,13 +47,16 @@ button {
     border: 1px solid #000;
     border-radius: 4px;
     padding: 3px;
-    width: 60px;
-    position: absolute;
-    right: 0;
-    bottom: 0;
 }
 
 button:hover {
     background: lightblue;
     box-shadow: 0px 0px 1px #777;
+}
+
+#inputForm button {
+    width: 60px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
 }

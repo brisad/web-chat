@@ -1,3 +1,33 @@
+var Login = React.createClass({
+  login: function () {
+    var username = React.findDOMNode(this.refs.username).value.trim();
+    if (username) {
+      this.props.onLogin(username);
+    }
+  },
+
+  handleButtonClick: function () {
+    this.login();
+  },
+
+  handleKeyPress: function (e) {
+    // Login if return key pressed
+    if (e.which == 13) {
+      this.login();
+    }
+  },
+
+  render: function () {
+    return (
+      <div>
+        <h1>What is your name?</h1>
+        <input type="text" ref="username" onKeyPress={this.handleKeyPress} />
+        <button onClick={this.handleButtonClick}>Log in</button>
+      </div>
+    )
+  }
+});
+
 var UserList = React.createClass({
   render: function () {
     // Users are passed as children in an array.  Map it to an array
@@ -64,7 +94,7 @@ var Chat = (function () {
 
   // Render chat UI with React.  This function needs to be called in
   // order for any update to be shown.
-  var render = function () {
+  var renderChatUI = function () {
     React.render(
       <div>
         <h1>Chat</h1>
@@ -80,21 +110,29 @@ var Chat = (function () {
     );
   }
 
-  // Placeholder function for sending messages to the server.  The
-  // real function is defined after a connection has been established
-  // and we've registered with the server.
+  var renderLoginForm = function () {
+    React.render(<Login onLogin={attemptRegister} />, document.body);
+  }
+
+  // Placeholder functions.  The real functions are defined after a
+  // connection has been established and when we've registered with
+  // the server.
+  var attemptRegister = function (username) {
+    alert("Not ready");
+  }
+
   var sendMessage = function (message) {
     alert("Not ready");
   }
 
   var setUsers = function (newUsers) {
     users = newUsers;
-    render();
+    renderChatUI();
   }
 
   var addMessage = function (newMessage) {
     messages.push(newMessage);
-    render();
+    renderChatUI();
   }
 
   var connectToServer = function () {
@@ -161,24 +199,27 @@ var Chat = (function () {
 
   return {
     init: function () {
-      username = "Guest" + parseInt(Math.random() * 10);
-      console.log("You are " + username);
 
       connectToServer().then(function (socket) {
+        console.log("Connected to server");
 
-        register(socket, username).then(
-          function () {
-            console.log("Register success!")
-            listenForMessages(socket);
+        attemptRegister = function (username) {
+          register(socket, username).then(
+            function () {
+              listenForMessages(socket);
 
-            sendMessage = function (message) {
-              socket.emit('message', {'from': username, 'message': message});
+              sendMessage = function (message) {
+                socket.emit('message', {'from': username, 'message': message});
+              }
+            },
+            function () {
+              alert("Username already in use.");
             }
-          },
-          function () {
-            console.log("Register fail!");
-          }
-        );
+          );
+        };
+
+        renderLoginForm();
+
       });
     }
   };
