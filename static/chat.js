@@ -21,7 +21,7 @@ var Login = React.createClass({
     return (
       <div>
         <h1>What is your name?</h1>
-        <input type="text" ref="username" onKeyPress={this.handleKeyPress} />
+        <input type="text" ref="username" onKeyPress={this.handleKeyPress} autoFocus={true} />
         <button onClick={this.handleButtonClick}>Log in</button>
       </div>
     )
@@ -92,7 +92,7 @@ var InputForm = React.createClass({
     return (
       <div id="inputForm">
         <div id="inputWrapper">
-          <input type="text" ref="text" onKeyPress={this.handleKeyPress} />
+          <input type="text" ref="text" onKeyPress={this.handleKeyPress} autoFocus={true} />
         </div>
         <button onClick={this.handleButtonClick}>Send</button>
       </div>
