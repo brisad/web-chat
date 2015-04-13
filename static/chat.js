@@ -47,6 +47,20 @@ var ChatMessages = React.createClass({
       return (<li>{message}</li>);
     });
     return (<ul id="messages">{messages}</ul>);
+  },
+
+  componentWillUpdate: function () {
+    // After update we should scroll to bottom only if it already is
+    // at the bottom now
+    var el = this.getDOMNode();
+    this.shouldScroll = el.scrollTop + el.clientHeight == el.scrollHeight;
+  },
+
+  componentDidUpdate: function () {
+    var el = this.getDOMNode();
+    if (this.shouldScroll) {
+      el.scrollTop = el.scrollHeight;
+    }
   }
 });
 

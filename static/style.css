@@ -15,6 +15,7 @@ ul {
 
 #messages {
     height: 200px;
+    overflow-y: auto;
 }
 
 #inputForm {
