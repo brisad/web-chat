@@ -1,6 +1,29 @@
 # Chat #
 
+A simple web-chat using WebSockets and React.
+
 ## Installing ##
+
+Create a virtualenv, activate it and install all dependencies with
+pip:
+```sh
+virtualenv env
+source env/bin/activate
+pip install -r requirements.txt
+```
+
+Install JavaScript dependencies:
+```sh
+npm install
+bower install
+```
+
+Now you should be ready to run the application by running
+```sh
+python app.py
+```
+
+### SSLError problem ###
 
 On my Debian box I get the following error when I try to run the
 SocketIO server:
