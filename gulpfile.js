@@ -16,4 +16,6 @@ gulp.task('transform', ['clean'], function () {
     .pipe(gulp.dest('./static'))
 });
 
-gulp.task('default', ['transform']);
+gulp.task('default', ['transform'], function () {
+  gulp.watch('./static/chat.jsx', ['transform']);
+});
