@@ -151,7 +151,7 @@ var Chat = (function () {
 
   var connectToServer = function () {
     var connected = $.Deferred();
-    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    var socket = io.connect();
 
     socket.on('connect', function () {
       // Make sure to disconnect before unloading
